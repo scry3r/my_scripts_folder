@@ -1,0 +1,33 @@
+#!/bin/bash
+# License GPL
+# by rodofr Live voyager
+# Modified by metalux for dynamic change wallpapers
+# V3.0 par metalux pour Voyager 18.04
+# Display the action selector
+
+video="/backdrop/screen0/monitor0/workspace3/last-image"
+current_desktop=$(wmctrl -d | awk '$2=="*" {print $1}')
+if [[ -n $(pgrep mocp) ]]; then
+	if xwininfo -name 'Voyager Music';then
+		if [[ $current_desktop -ne $(grep 'Voyager Music' <(wmctrl -l) | awk '{print $2}') ]];then
+			wmctrl -a 'Voyager Music'
+			exit 0
+		else
+			wmctrl -c 'Voyager Music'
+			notify-send -i ~/.scripts/Wall/Voyager2.png 'Voyager Music' 'Server Moc On'
+			wmctrl -s0
+			exit 0	
+		fi
+	else
+		kill $(pgrep -f mop1)
+		pkill mocp
+		notify-send -i ~/.scripts/Wall/Voyager1.png 'Voyager Music' 'Moc Off'
+	fi
+	
+else
+	pgrep kodi && killall -9 kodi.bin
+	wmctrl -s0
+	conky -c ~/.scripts/Wall/mop1
+	xfce4-terminal --title='Voyager Music' --maximize --hide-menubar -e "screen mocp"
+fi
+exit 0

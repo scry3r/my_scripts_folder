@@ -1,0 +1,5 @@
+#!/bin/bash
+# License GPL
+# by rodofr Live Voyager
+# Display the action selector
+steam steam://open/bigpicture

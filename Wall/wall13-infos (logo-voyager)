@@ -1,0 +1,8 @@
+#!/bin/bash
+# License GPL
+# by rodofr Live Voyager
+# Voyager 18.04
+# Display the action selector
+	pgrep -f "Voyager Infos" & wmctrl -c "Voyager Infos" || xfce4-terminal --title="Voyager Infos" --geometry 100x32 --execute bash -c "neofetch --loop on --w3m /usr/share/xfce4/voyager/Logo.png ; bash" &
+
+exit 0

@@ -1,0 +1,53 @@
+#!/bin/bash
+# License GPL
+# by rodofr Live Voyager
+# V3.0 pour Voyager 16.04 par metalux
+# Display the action selector
+
+num_of_desk=$(wmctrl -d | awk 'END {print $1}')
+current_desktop=$(wmctrl -d | awk '$2=="*" {print $1}')
+
+if [  ! -z "$1" ];then
+   	echo $1 > ~/.scripts/Wall/.fondbase6
+   	wmctrl -n $(( num_of_desk+2 ))
+   	xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace$num_of_desk/last-image -s "$1"
+   	wmctrl -s$num_of_desk
+    ! pgrep -f 'Voyager terminator' && terminator -T 'Voyager Terminator' -mb --layout=r -p 'voyager'
+    exit 0
+fi
+
+if xwininfo -name 'Voyager Terminator';then
+    desk_of_VFM=$(grep 'Voyager Terminator' <(wmctrl -l) | awk '{print $2}')
+	if [[ $current_desktop -ne $desk_of_VFM  ]];then
+		wmctrl -s$desk_of_VFM
+		exit 0
+    else
+	    wmctrl -s0
+	    wmctrl -c 'Voyager Terminator'
+        if xwininfo -name 'Voyager File Manager';then
+            desk_of_VFM=$(grep 'Voyager File Manager' <(wmctrl -l) | awk '{print $2}')
+            wmctrl -n5
+            xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace4/last-image -s "$(<~/.scripts/Wall/.fondbase5)"
+        else
+            wmctrl -n4
+        fi
+    fi
+    exit 0
+else
+    wmctrl -n $(( num_of_desk+2 )) 
+    num_of_desk=$(wmctrl -d | awk 'END {print $1}')
+	wmctrl -s$num_of_desk
+	
+	xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace$num_of_desk/last-image -s "$(<~/.scripts/Wall/.fondbase6)"
+	terminator -T 'Voyager Terminator' -mb --layout=s -p 'voyager'	
+if xwininfo -name 'Voyager File Manager';then
+            desk_of_VFM=$(grep 'Voyager File Manager' <(wmctrl -l) | awk '{print $2}')
+            wmctrl -n5
+            xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace4/last-image -s "$(<~/.scripts/Wall/.fondbase5)"
+	wmctrl -s0
+        else
+            wmctrl -n4
+        fi
+fi	
+
+exit 0

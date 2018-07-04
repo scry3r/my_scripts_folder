@@ -1,0 +1,57 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Voyager color\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-01-27 01:30+0100\n"
+"PO-Revision-Date: 2016-01-27 01:30+0100\n"
+"Last-Translator: Metalux\n"
+"Language-Team:  <no_adress@http://voyagerlive.org/index.php/contact/>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: colors:41
+msgid "Green"
+msgstr "grün"
+
+#: colors:41
+msgid "Red"
+msgstr "Rot"
+
+#: colors:41
+msgid "Blue"
+msgstr "Blau"
+
+#: colors:41
+msgid "Grey"
+msgstr "Grau"
+
+#: colors:41
+msgid "Violet"
+msgstr "Lila"
+
+#: colors:41
+msgid "Yellow"
+msgstr "Gelb"
+
+#: colors:41
+msgid "Orange"
+msgstr "Orange"
+
+#: colors:41
+msgid "Black"
+msgstr "Schwarze"
+
+#: colors:57
+msgid ""
+"<b><big>Choose a color\\n"
+"</big></b>"
+msgstr ""
+"<b><big>wählen Sie eine Farbe\\n"
+"</big></b>"
+

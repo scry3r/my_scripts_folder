@@ -1,0 +1,7 @@
+#!/bin/bash
+# License GPL
+# by rodofr Live Voyager
+# Voyager 16.04
+# Display the action selector
+
+pgrep -f /usr/bin/i-nex.gambas && pkill -f /usr/bin/i-nex.gambas || /usr/bin/i-nex.gambas &

@@ -1,0 +1,136 @@
+#!/bin/bash
+# by rodofr@ - Voyager Live - Didier-T@
+# Version 1.06
+
+
+### section barre de progression
+
+function init_progress_bar() {
+	pipe_dir="$( mktemp -d )"
+	pipe="${pipe_dir}/pipe"
+	mkfifo "${pipe}"
+	zenity --progress --title="Initialisation" --text="progression..." --percentage=0 --width 700 --auto-close --auto-kill >/dev/null 2>&1 <"${pipe}" &
+	exec 6>"${pipe}"
+}
+
+function purge_progress_barre() {
+	trap - SIGHUP SIGINT
+	exec 6>&-
+	rm -rf "${pipe_dir}"
+}
+
+### Fin Barre de progression
+
+
+### Initialisation variables
+function init() {
+	i=0
+	j=1
+	x=0
+	perc=$(( $(wc -l < ~//.scripts/Conky/$1) + 5 ))
+	perc=$(( 10000 / $perc ))
+
+	Lancer=`ps ax | awk '/\ conky\ -c/'`
+	liste="false Conky-all-Stop - Conky-all-Stop"
+	home=$(echo "$HOME" | sed -e 's/\//\\\//g')
+	while read line  
+	do
+		i=$(( $i + 1 ))
+		perc1=$(( $(( $i * perc )) / 100 ))
+		printf "%s\n" "${perc1}" >&6 2>/dev/null
+		if [ $(( $i - $x )) -eq 1 ]; then
+			conky[$j]=$line
+		else
+			nom[$j]=`echo "$line" | sed -e "s/\~/$home/"`
+			adress[$j]=$(echo "${nom[$j]}"|sed -e 's/\//\\\//g')
+			if echo "$Lancer" | grep -q -w "${adress[$j]}"; then
+				c=true
+			else
+				c=false
+			fi
+			liste=$liste" "$c" "${conky[$j]}" "$j" "${nom[$j]}
+			j=$(( j + 1 ))
+			x=$i
+		fi
+	done < ~/.scripts/Conky/$1
+	liste=$liste" false Conky-all-Stop - Conky-all-Stop"
+}
+
+
+### Création suppression autorun
+function autorun() {
+	zenity --question --height=70	--text="
+	Voulez-vous conserver/désélectionner ce(s) conky au démarrage ? Valider
+                                                                           
+	Do you want to keep/deselect this (these) conky (s) on startup ? Validate"
+	z=$?
+
+	if [ $z -eq 0 ]; then
+		i=0
+		for i in ${!conky[*]}; do
+			if ! [ $i -eq 0 ]; then
+				if echo "$RET" | grep -q ${adress[$i]}; then
+					if ! [ -f ~/.config/autostart/Conky\ $i\.desktop ]; then
+						echo message:"Ajout démarrage automatique\nconky n°$i (${conky[$i]})" | zenity --notification --timeout=2 --listen --window-icon="info" &
+						echo "[Desktop Entry]
+Encoding=UTF-8
+Version=0.9.4
+Type=Application
+Name=Conky $i (${conky[$i]})
+Comment=
+Exec=sh -c \"sleep 10; conky -c ${nom[$i]};\"
+StartupNotify=false
+Terminal=false
+Hidden=false" > ~/.config/autostart/Conky\ $i\.desktop
+					fi
+				else
+					if [ -f ~/.config/autostart/Conky\ $i\.desktop ]; then
+						echo message:"Suppression démarrage automatique\ndu conky n°$i (${conky[$i]})" | zenity --notification --timeout=2 --listen --window-icon="info" &
+						rm ~/.config/autostart/Conky\ $i\.desktop &
+					fi
+				fi
+			fi
+		done
+	fi
+}
+
+
+### Selection des conkys à afficher
+function choix() {
+	RET=`zenity --list --title="Conky" --checklist --width=330 --height=440 --column="Select" --column="Conky" --column="N°" --column="Adress" --hide-column="4" --print-column="4" $liste`
+
+	Z=$?
+	if  [ $Z -eq 0 ]; then
+		for i in ${!conky[*]}; do
+		if ! [ $i -eq 0 ]; then
+			if echo "$RET" | grep -q ${adress[$i]}; then
+				if [ -z `echo $Lancer | grep ${adress[$i]}|awk '{print 1}'` ]; then
+					exec sh -c "conky -c ${nom[$i]};" &
+					echo message:"start-up conky\nn°$i ${conky[$i]}" | zenity --notification --timeout=2 --listen --window-icon="info" &
+				fi
+			else
+				if echo "$Lancer" | grep -q ${adress[$i]}; then
+					exec ps ax | awk "/ conky -c ${adress[$i]}/ {print \$1}" | xargs kill -9 &
+					echo message:"Stop conky\nn°$i ${conky[$i]}" | zenity --notification --timeout=2 --listen --window-icon="info" &
+				fi
+			fi
+		fi
+		done
+		if echo "$RET" | grep "Conky-all-Stop"; then
+			if pidof conky | grep [0-9] > /dev/null; then
+				echo message:"Killall\nStop all conky" | zenity --notification --timeout=2 --listen --window-icon="info" &
+				exec killall conky
+			fi
+			exit 0
+		fi
+		### Lancement autorun
+		autorun
+	fi
+}
+
+init_progress_bar
+init $1
+purge_progress_barre
+choix
+
+exit 0

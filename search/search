@@ -1,0 +1,189 @@
+﻿#!/bin/sh -x
+# script of barbican82@
+# Modified by rodofr Live Voyager
+# script de recherche récursive des videos avec création d'une page web
+# on se place dans le home du user courant
+# dependance : zenity
+
+cd
+ici=`pwd`
+##On crée/vide le fichier
+> $ici/index.html
+
+# Selection du répertoire à explorer ($HOME par defaut)
+chemin=$(zenity  --file-selection --title="Select Directory that contains JPEGS" --directory --filename=$HOME/)
+
+#Selection du type de fichier à chercher
+doc=$(zenity --entry --ok-label="Valider" --cancel-label="Annuler" --width=400 --height=100 --title="Saisie" --text="Selection" --entry-text="Movies" Music Image Document Ebook)
+
+#Si on clique sur le bouton Annuler
+if [ "$?" -eq 1 ]; then
+    #On quitte le script
+    exit
+fi
+
+case $doc in
+		1) 
+			exit 
+		;;
+		
+		Movies)
+			rep=$(zenity --entry --ok-label="Valider" --cancel-label="Annuler" --width=400 --height=100 --title=" Saisie" --text="Enter all or part of the name of the movie or leave blank - Entrez tout ou partie du nom du film ou laissez vide" )
+
+#Si on clique sur le bouton Annuler
+if [ "$?" -eq 1 ]; then
+    #On quitte le script
+    exit
+fi
+
+#Génération de la page web
+# en-tête
+echo '<html>' >> index.html
+echo '<head><title></title><meta http-equiv="content-type" content="text/html; charset=utf-8" /></head>' >> index.html
+echo '<h2>Movies</h2>' >> index.html
+
+		# recherche des fichiers videos, on se limite aux avi AVI, mp4 MP4 et mkv MKV
+		if [$rep == ""] ;then 
+				find  $chemin $file -type f -iname '*.mp4' -o -iname '*.avi' -o -iname '*.mkv' | while read i
+			#on ajoute les fichiers trouvés dans la page html
+				do
+				echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+				done
+
+				else 
+				find $chemin $file -type f -iname "*$rep*.mp4" -o -iname "*$rep*.avi" -o -iname "*$rep*.mkv" | while read i
+				do
+				echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+				done
+		fi
+			;;
+
+		Music)
+			rep=$(zenity --entry --ok-label="Valider" --cancel-label="Annuler" --width=400 --height=100 --title=" Saisie" --text="Enter all or part of the name of the movie or leave blank - Entrez tout ou partie du nom du film ou laissez vide" )
+
+#Si on clique sur le bouton Annuler
+if [ "$?" -eq 1 ]; then
+    #On quitte le script
+    exit
+fi
+
+#Génération de la page web
+# en-tête
+echo '<html>' >> index.html
+echo '<head><title></title><meta http-equiv="content-type" content="text/html; charset=utf-8" /></head>' >> index.html
+echo '<h1>Music</h1>' >> index.html
+
+		# recherche des fichiers sons on se limite aux mp3, flac, wav
+		if [$rep == ""] ;then 
+				find $chemin $file -type f -iname '*.mp3' -o -iname '*.flac' -o -iname '*.wav' | while read i
+				#on ajoute les fichiers trouvés dans la page html
+				do
+					echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+				done
+				else	 
+					find $chemin  $file -type f -iname "*$rep*.mp3" -o -iname "*$rep*.flac" -o -iname "*$rep*.wav" | while read i
+				do
+					echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+				done
+		fi
+			;;
+
+		Image)
+			rep=$(zenity --entry --ok-label="Valider" --cancel-label="Annuler" --width=400 --height=100 --title=" Saisie" --text="Enter all or part of the name of the movie or leave blank - Entrez tout ou partie du nom du film ou laissez vide" )
+
+#Si on clique sur le bouton Annuler
+if [ "$?" -eq 1 ]; then
+    #On quitte le script
+    exit
+fi
+
+#Génération de la page web
+# en-tête
+echo '<html>' >> index.html
+echo '<head><title></title><meta http-equiv="content-type" content="text/html; charset=utf-8" /></head>' >> index.html
+echo '<h1>Image</h1>' >> index.html
+
+		# recherche des fichiers sons on se limite aux mp3, flac, wav
+		if [$rep == ""] ;then 
+				find $chemin $file -type f -iname '*.png' -o -iname '*.jpeg' -o -iname '*.jpg' -o -iname '*.svg' | while read i
+				#on ajoute les fichiers trouvés dans la page html
+				do
+					echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+				done
+				else	 
+					find $chemin  $file -type f -iname "*$rep*.png" -o -iname "*$rep*.jpeg" -o -iname "*$rep*.jpg" -o -iname "*$rep*.svg" | while read i
+				do
+					echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+				done
+		fi
+			;;
+
+		Document)
+			rep=$(zenity --entry --ok-label="Valider" --cancel-label="Annuler" --width=400 --height=100 --title=" Saisie" --text="Enter all or part of the name of the movie or leave blank - Entrez tout ou partie du nom du film ou laissez vide" )
+
+#Si on clique sur le bouton Annuler
+if [ "$?" -eq 1 ]; then
+    #On quitte le script
+    exit
+fi
+
+#Génération de la page web
+# en-tête
+echo '<html>' >> index.html
+echo '<head><title></title><meta http-equiv="content-type" content="text/html; charset=utf-8" /></head>' >> index.html
+echo '<h2>Document</h2>' >> index.html
+
+			# recherche des fichiers  on se limite aux doc, xls, odt, ods
+		if [$rep == ""] ;then 
+				find $chemin $file -type f -iname '*.doc' -o -iname '*.odt' -o -iname '*.xls' -o -iname '*.ods' -o -iname '*.text' -o -iname '*.pdf' -o -iname '*.txt' -o -iname '*.docs' | while read i
+				#on ajoute les fichiers trouvés dans la page html
+				do
+					echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+				done
+				else 
+				find $chemin $file -type f -iname "*$rep*.doc" -o -iname "*$rep*.odt " -o -iname "*$rep*.xls" -o -iname "*$rep*.ods" -o -iname "*$rep*.text" -o -iname "*$rep*.pdf" -o -iname "*$rep*.txt" -o -iname "*$rep*.docs" | while read i
+				do
+				echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+				done	
+		fi
+			;;
+		Ebook)
+			rep=$(zenity --entry --ok-label="Valider" --cancel-label="Annuler" --width=400 --height=100 --title=" Saisie" --text="Enter all or part of the name of the movie or leave blank - Entrez tout ou partie du nom du film ou laissez vide" )
+
+#Si on clique sur le bouton Annuler
+if [ "$?" -eq 1 ]; then
+    #On quitte le script
+    exit
+fi
+
+#Génération de la page web
+# en-tête
+echo '<html>' >> index.html
+echo '<head><title></title><meta http-equiv="content-type" content="text/html; charset=utf-8" /></head>' >> index.html
+echo '<h2>Ebook</h2>' >> index.html
+
+			# recherche des fichiers  on se limite aux epub, pdf 
+		if [$rep == ""] ;then 
+				find $chemin $file -type f -iname '*.epub' -o -iname '*.pdf' | while read i
+				#on ajoute les fichiers trouvés dans la page html
+				do
+					echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+				done
+				else 
+				find $chemin $file -type f -iname "*$rep*.epub" -o -iname "*$rep*.pdf " | while read i
+				do
+				echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+				done	
+		fi
+			;;
+			esac
+	#Génération de la page web # en-tête
+		echo '<html>' >> $ici/index.html
+		echo '<li><a href="'${i}'">'${i}'</a></li>' >> $ici/index.html
+	
+echo '</ul></body></html>' >> $ici/index.html
+# firefox ouvre la page
+firefox $ici/index.html
+
+#fin
+exit 0

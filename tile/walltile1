@@ -1,0 +1,6 @@
+#!/bin/bash
+# License GPL
+# by rodofr Live Voyager and Metalux
+# Display the action selector
+[[ $(</tmp/walltile1) == Left ]] && (xdotool key ctrl+Right && echo Right > /tmp/walltile1) || (xdotool key ctrl+Left && echo Left > /tmp/walltile1)
+

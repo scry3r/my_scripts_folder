@@ -1,0 +1,6 @@
+#!/bin/bash
+# License GPL
+# by rodofr Live Voyager and Metalux
+# Display the action selector
+[[ $(</tmp/walltile2) == Down ]] && (xdotool key ctrl+Up && echo Up > /tmp/walltile2) || (xdotool key ctrl+Down && echo Down > /tmp/walltile2)
+

@@ -1,0 +1,151 @@
+#!/bin/sh
+# Both bash and dash should work
+
+#-FILE------------------------------------------------------------------
+#
+#      thunar-EXIF.yad
+#
+#-PURPOSE---------------------------------------------------------------
+#
+#      Originally, for XFCE Thunar UCA (User Customizable Action)
+#      Displays EXIF data + thumbnail of a photo in a yad dialog box
+#
+#-SYNTAX---------------------------------------------------------------
+#
+#      To be called with: thunar-EXIF.yad %n
+#      !!! in Thunar-UCA: just %n, no 'quotes', no "quotes" !!!
+#
+#-DEPENDENCIES----------------------------------------------------------
+#
+#      - column
+#      - exiv2
+#      - grep
+#      - sed
+#      - yad
+#
+#-VERSIONS--------------------------------------------------------------
+#
+#      2011-07-10 : v0.3 / + EXIF fields aligned in neat columns
+#                                  (important for non English languages)
+#      2011-07-07 : v0.2 / + _Open (photo in favourite image viewer)
+#                          + gtk-buttons
+#      2011-07-06 : v0.1 / + First release
+#
+#-LICENSE---------------------------------------------------------------
+#
+#      Copyright 2011 Olivier BOURSIN <o.boursin@gmail.com>
+#
+#      This program is free software; you can redistribute it and/or modify
+#      it under the terms of the GNU General Public License as published by
+#      the Free Software Foundation; either version 2 of the License, or
+#      (at your option) any later version.
+#
+#      This program is distributed in the hope that it will be useful,
+#      but WITHOUT ANY WARRANTY; without even the implied warranty of
+#      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#      GNU General Public License for more details.
+#
+#      You should have received a copy of the GNU General Public License
+#      along with this program; if not, write to the Free Software
+#      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#      MA 02110-1301, USA.
+#
+#-----------------------------------------------------------------------
+
+#
+# LANGUAGE SETTINGS
+#
+
+# Your own language here…
+# Type ' echo ${LANG%_*} ' in a terminal to check your language code
+case ${LANG%_*} in
+    fr)
+        # Error texts (e_)
+        e_Title="Utilitaire manquant"
+        e_Text="Désolé !\n\nPour afficher les données EXIF,\nj'ai besoin d'avoir accès aux utilitaires suivants :\n"
+        # EXIF texts (x)
+        xTitle="Données EXIF"
+        ;;
+    en|*) # English + fallback
+        # Error texts (e_)
+        e_Title="Utility missing"
+        e_Text="Sorry!\n\nIn order to display the EXIF data,\nI need access to following utilities:\n"
+        # EXIF texts (x)
+        xTitle="EXIF Data"
+        ;;
+esac
+
+#
+# HAVE WE GOT EVERYTHING WE NEED ?
+#
+
+# Test dependencies - Abort if something is missing
+appDIALOG="yad"
+listeAPPS="column exiv2 grep sed $appDIALOG"
+manqueAPPS=""
+for appUTILE in $listeAPPS ; do
+    [ "$(which $appUTILE 2>/dev/null)" = "" ] \
+        && manqueAPPS="$manqueAPPS\n$appUTILE"
+done
+if [ "$manqueAPPS" != "" ] ; then
+    # Display error message
+    if [ "$(which $appDIALOG 2>/dev/null)" = "" ] ; then
+        echo "$e_Text$manqueAPPS" | sed s/"\\\n"/" "/g ;
+    else
+        # Prepare markup
+        yText="$e_Text <tt><b><span fgcolor='blue'>$manqueAPPS</span></b></tt>"
+        $appDIALOG --window-icon="camera"  \
+                   --title "$e_Title"       \
+                   --image="error"         \
+                   --fixed                 \
+                   --mouse                 \
+                   --button="gtk-cancel:1" \
+                   --text "$yText" ;
+    fi
+    # Abort script
+    exit 1
+fi
+
+#
+# EVERYTHING WE NEED IS THERE, SO LET'S DO IT!
+#
+
+# White spaces in filename are handled from here
+yPhoto="$1"
+yVignette=${yPhoto%.*}     # strips last suffix
+yVignette=${yVignette##*/} # strips directories
+yRepTemp="/tmp"
+yVignette="$yRepTemp/$yVignette-thumb.jpg"
+
+yImage=$(exiv2 -et "$yPhoto"            \
+               -l $yRepTemp 2>/dev/null \
+        ; echo "$yVignette")
+yText="<tt>$(exiv2 -u "$yPhoto" | sed s/:/#:/ | column -ts#)</tt>"
+# Other possibilities
+#yText="<tt>$(exiv2 -u "$yPhoto" | sed s/:/#:/ | column -ts# | sed s/\ :/:/)</tt>"
+#yText="<tt>$(exiv2 -u "$yPhoto" | sed s/:/#:/ | column -ts# | grep -ve '.*: $')</tt>"
+
+yad --window-icon="camera" \
+    --title="$xTitle"      \
+    --image="$yImage"      \
+    --dialog-sep           \
+    --button="gtk-open:10" \
+    --button="gtk-close:0" \
+    --fixed                \
+    --text="$yText"
+
+yChoix=$?
+
+# Cleanup
+rm "$yVignette" #2>/dev/null 1>/dev/null
+
+[ $yChoix -eq  0 ] && exit 0
+[ $yChoix -eq 10 ] && xdg-open "$yPhoto" #2>/dev/null 1>/dev/null
+# This syntax works for bash AND dash  ---^        ---^         #
+
+# Loop ?
+# exec $0 $@
+
+#
+# E N D - Hope you liked it!
+#

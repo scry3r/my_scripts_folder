@@ -1,0 +1,22 @@
+#!/bin/bash
+# License GPL
+# by rodofr Live Voyager
+# V3.0 pour Voyager 16.04 par metalux
+# Display the action selector
+current_desktop=$(wmctrl -d | awk '$2=="*" {print $1}')
+if pgrep kodi.bin;then
+	if [[ $current_desktop -ne 2 ]];then
+		wmctrl -s2
+    		exit 0
+	else
+		killall -9 kodi.bin
+		wmctrl -s0
+		exit 0
+    fi
+else	
+	wmctrl -s2
+	kodi	
+	exit 0
+fi
+exit 0
+

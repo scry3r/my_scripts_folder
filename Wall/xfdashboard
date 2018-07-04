@@ -1,0 +1,8 @@
+#!/bin/bash
+# License GPL
+# by rodofr Live Voyager
+# V3.0 pour Voyager 16.04 par metalux
+# Display the action selector
+
+/usr/bin/xfdashboard
+

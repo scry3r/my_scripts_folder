@@ -1,0 +1,9 @@
+#!/bin/bash
+# License GPL
+# by rodofr Live Voyager
+# V3.0 pour Voyager 16.04 par metalux
+# Display the action selector
+
+pgrep -f pulseaudio-equalizer-gtk && pkill -f pulseaudio-equalizer || pulseaudio-equalizer-gtk &
+
+
