@@ -1,5 +1,0 @@
-#!/bin/bash
-# License GPL
-# by rodofr Live Voyager
-# Display the action selector
-/opt/wine-d3d9-staging/bin/winecfg

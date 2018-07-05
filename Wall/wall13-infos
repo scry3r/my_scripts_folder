@@ -1,8 +1,0 @@
-#!/bin/bash
-# License GPL
-# by rodofr Live Voyager
-# Voyager 18.04
-# Display the action selector
-	pgrep -f "Voyager Infos" & wmctrl -c "Voyager Infos" || xfce4-terminal --title="Voyager Infos" --geometry 100x35 --execute bash -c "neofetch --ascii_distro Ubuntu; bash" &
-
-exit 0
