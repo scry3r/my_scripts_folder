@@ -44,7 +44,7 @@ apt-get install -q -y   -o Dpkg::Options::="--force-confdef" \
 i3lock i3status dmenu dunst
 
 # purge apps
-apt-get purge -q -y firefox libreoffice* gnome-calculator gnome-calendar gnome-screenshot gnome-software gnome-sudoku gnome-system-monitor gnome-system-log gnome-mahjongg gnome-disk-utility gnome-mines gnome-orca gnome-power-manager thunderbird cheese aisleriot nautilus zeitgeist-core zeitgeist-datahub checkbox-* gedit totem rhythmbox yelp baobab deja-dup onboard shotwell vim*
+apt-get purge -q -y firefox libreoffice* gnome-calculator gnome-calendar gnome-screenshot gnome-software gnome-sudoku gnome-system-monitor gnome-system-log gnome-mahjongg gnome-disk-utility gnome-mines gnome-orca gnome-power-manager thunderbird cheese aisleriot nautilus zeitgeist-core zeitgeist-datahub checkbox-* gedit totem rhythmbox yelp baobab deja-dup onboard shotwell vim* notify-osd
 
 # basic apps
 add-apt-repository ppa:dawidd0811/neofetch -y
@@ -61,4 +61,8 @@ cp ~/.scripts/i3-scrot /usr/bin/
 cp ~/.scripts/blurlock /usr/bin/
 
 # system apps
-apt-get install -q -y debian-goodies apt-listchanges
+apt-get install -q -y debian-goodies apt-listchanges gir1.2-appindicator3-0.1 gir1.2-notify-0.7 python-gobject wmctrl openvpn python-urwid python-requests mercurial meld
+
+cd ~/Downloads/
+sudo dpkg -i *.deb
+sudo apt install -q -f -y
