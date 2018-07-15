@@ -44,7 +44,7 @@ apt-get install -q -y   -o Dpkg::Options::="--force-confdef" \
 i3lock i3status dmenu dunst
 
 # purge apps
-apt-get purge -q -y firefox libreoffice* gnome-calculator gnome-calendar gnome-screenshot gnome-software gnome-sudoku gnome-system-monitor gnome-system-log gnome-mahjongg gnome-disk-utility gnome-mines gnome-orca gnome-power-manager thunderbird cheese aisleriot nautilus zeitgeist-core zeitgeist-datahub checkbox-* gedit totem rhythmbox yelp baobab deja-dup onboard shotwell
+apt-get purge -q -y firefox libreoffice* gnome-calculator gnome-calendar gnome-screenshot gnome-software gnome-sudoku gnome-system-monitor gnome-system-log gnome-mahjongg gnome-disk-utility gnome-mines gnome-orca gnome-power-manager thunderbird cheese aisleriot nautilus zeitgeist-core zeitgeist-datahub checkbox-* gedit totem rhythmbox yelp baobab deja-dup onboard shotwell vim*
 
 # basic apps
 add-apt-repository ppa:dawidd0811/neofetch -y
@@ -53,7 +53,7 @@ add-apt-repository ppa:numix/ppa -y
 apt-get update -q
 apt-get install -q -y   -o Dpkg::Options::="--force-confdef" \
                         -o Dpkg::Options::="--force-confold" \
-neofetch xsettingsd feh htop mlocate rxvt-unicode ranger w3m-img mpd ncmpcpp rofi compton surf mpv dnsutils htop vim nitrogen redshift redshift pcmanfm lxappearance scrot xclip gawk bmon nethogs etherape gdebi moc ubuntu-restricted-addons  ubuntu-restricted-extras openssh-server network-manager-iodine network-manager-vpnc-gnome network-manager-vpnc network-manager-strongswan network-manager-ssh-gnome network-manager-ssh network-manager-pptp-gnome network-manager-pptp network-manager-openvpn-gnome network-manager-openvpn network-manager-iodine-gnome network-manager-openconnect-gnome network-manager-openconnect nmap dnsutils numix-icon-theme-circle arandr volti pavucontrol parcellite blueman xfce4-power-manager tlp tlp-rdw classicmenu-indicator indicator-keylock gparted
+neofetch xsettingsd feh htop mlocate rxvt-unicode ranger w3m-img mpd ncmpcpp rofi compton surf mpv dnsutils htop vim nitrogen redshift redshift pcmanfm lxappearance scrot xclip gawk bmon nethogs etherape gdebi moc ubuntu-restricted-addons  ubuntu-restricted-extras openssh-server network-manager-iodine network-manager-vpnc-gnome network-manager-vpnc network-manager-strongswan network-manager-ssh-gnome network-manager-ssh network-manager-pptp-gnome network-manager-pptp network-manager-openvpn-gnome network-manager-openvpn network-manager-iodine-gnome network-manager-openconnect-gnome network-manager-openconnect nmap dnsutils numix-icon-theme-circle arandr volti pavucontrol parcellite blueman xfce4-power-manager tlp tlp-rdw classicmenu-indicator indicator-keylock gparted undistract-me
 
 # Copy system scripts
 cp ~/.scripts/i3exit /usr/bin/
