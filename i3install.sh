@@ -50,7 +50,7 @@ apt-get purge -q -y firefox libreoffice* gnome-calculator gnome-calendar gnome-s
 add-apt-repository ppa:dawidd0811/neofetch -y
 add-apt-repository ppa:nilarimogard/webupd8 -y
 add-apt-repository ppa:numix/ppa -y
-sudo add-apt-repository ppa:atareao/telegram -y
+add-apt-repository ppa:atareao/telegram -y
 apt-get update -q
 apt-get install -q -y   -o Dpkg::Options::="--force-confdef" \
                         -o Dpkg::Options::="--force-confold" \
@@ -71,5 +71,7 @@ cp -rf ~/.scripts/i3status.conf /etc/
 
 # *.deb apps
 cd ~/Downloads/
-sudo dpkg -i *.deb
-sudo apt install -q -f -y
+dpkg -i *.deb || true
+apt-get install -q -f -y 
+apt-get upgrade -y
+apt-get autoremove -y
