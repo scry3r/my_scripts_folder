@@ -50,19 +50,26 @@ apt-get purge -q -y firefox libreoffice* gnome-calculator gnome-calendar gnome-s
 add-apt-repository ppa:dawidd0811/neofetch -y
 add-apt-repository ppa:nilarimogard/webupd8 -y
 add-apt-repository ppa:numix/ppa -y
+sudo add-apt-repository ppa:atareao/telegram -y
 apt-get update -q
 apt-get install -q -y   -o Dpkg::Options::="--force-confdef" \
                         -o Dpkg::Options::="--force-confold" \
-neofetch xsettingsd feh htop mlocate rxvt-unicode ranger w3m-img mpd ncmpcpp rofi compton surf mpv dnsutils htop vim nitrogen redshift redshift pcmanfm lxappearance scrot xclip gawk bmon nethogs etherape gdebi moc ubuntu-restricted-addons  ubuntu-restricted-extras openssh-server network-manager-iodine network-manager-vpnc-gnome network-manager-vpnc network-manager-strongswan network-manager-ssh-gnome network-manager-ssh network-manager-pptp-gnome network-manager-pptp network-manager-openvpn-gnome network-manager-openvpn network-manager-iodine-gnome network-manager-openconnect-gnome network-manager-openconnect nmap dnsutils numix-icon-theme-circle arandr volti pavucontrol parcellite blueman xfce4-power-manager tlp tlp-rdw classicmenu-indicator indicator-keylock gparted undistract-me
+neofetch xsettingsd feh htop mlocate rxvt-unicode ranger w3m-img mpd ncmpcpp rofi compton surf mpv dnsutils htop vim nitrogen redshift \
+redshift pcmanfm lxappearance scrot xclip gawk bmon nethogs etherape gdebi moc ubuntu-restricted-addons ubuntu-restricted-extras \
+openssh-server network-manager-iodine network-manager-vpnc-gnome network-manager-vpnc network-manager-strongswan network-manager-ssh-gnome network-manager-ssh network-manager-pptp-gnome \
+network-manager-pptp network-manager-openvpn-gnome network-manager-openvpn network-manager-iodine-gnome network-manager-openconnect-gnome network-manager-openconnect nmap dnsutils \
+numix-icon-theme-circle arandr volti pavucontrol parcellite blueman xfce4-power-manager tlp tlp-rdw \
+classicmenu-indicator indicator-keylock gparted undistract-me telegram lynis debian-goodies \
+apt-listchanges gir1.2-appindicator3-0.1 gir1.2-notify-0.7 python-gobject wmctrl openvpn \
+python-urwid python-requests mercurial meld rkhunter needrestart debsecan fail2ban debsums
 
 # Copy system scripts
-cp ~/.scripts/i3exit /usr/bin/
-cp ~/.scripts/i3-scrot /usr/bin/
-cp ~/.scripts/blurlock /usr/bin/
+cp -rf ~/.scripts/i3exit /usr/bin/
+cp -rf ~/.scripts/i3-scrot /usr/bin/
+cp -rf ~/.scripts/blurlock /usr/bin/
+cp -rf ~/.scripts/i3status.conf /etc/
 
-# system apps
-apt-get install -q -y debian-goodies apt-listchanges gir1.2-appindicator3-0.1 gir1.2-notify-0.7 python-gobject wmctrl openvpn python-urwid python-requests mercurial meld
-
+# *.deb apps
 cd ~/Downloads/
 sudo dpkg -i *.deb
 sudo apt install -q -f -y
